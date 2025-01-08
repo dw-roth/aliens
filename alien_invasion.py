@@ -18,9 +18,12 @@ class AlienInvasion:
 
         self.screen = pygame.display.set_mode(
              (self.settings.screen_width, self.settings.screen_height))
+        
+        # commented out code below is to set the game a full screen
         # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         # self.settings.screen_width = self.screen.get_rect().width
         # self.settings.screen_height = self.screen.get_rect().height
+
         pygame.display.set_caption(self.settings.caption)
 
         self.ship = Ship(self)
@@ -35,22 +38,28 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self._update_bullets()
+            self._update_aliens()
             self._update_screen()
             self.clock.tick(60)
 
     def _create_alien_fleet(self):
         """ Create the fleet of aliens """
         alien = Alien(self)
-        x_pos = alien.rect.width
+        x_pos, y_pos = alien.rect.width, alien.rect.height
 
-        while x_pos < (self.settings.screen_width - (2 * alien.rect.width)):
-            self.aliens.add(self._create_alien(x_pos))
-            x_pos += alien.rect.width * 2
+        while y_pos < (self.settings.screen_height - (7 * alien.rect.height)):
+            while x_pos < (self.settings.screen_width - (2 * alien.rect.width)):
+                self.aliens.add(self._create_alien(x_pos, y_pos))
+                x_pos += alien.rect.width * 2
+            
+            x_pos = alien.rect.width
+            y_pos += alien.rect.height * 2
 
-    def _create_alien(self, x_pos):
+    def _create_alien(self, x_pos, y_pos):
         """ The work to create a new alien subsumed into this function """
         alien = Alien(self)
         alien.x = alien.rect.x = x_pos
+        alien.y = alien.rect.y = y_pos
         return alien
             
     def _check_events(self):
@@ -70,6 +79,24 @@ class AlienInvasion:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
                 print(f"{len(self.bullets)} bullets active")
+
+    def _update_aliens(self):
+        self._check_alien_fleet_edges()
+        self.aliens.update()
+
+    def _check_alien_fleet_edges(self):
+        """ Move down and change directions if any single alien has reached an edge """
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """ drop the fleet and change direction """
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.alien_vert_speed
+
+        self.settings.fleet_direction *= -1
 
     def _handle_keydown_event(self, event):
         if event.key == pygame.K_RIGHT:
