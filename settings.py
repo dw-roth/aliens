@@ -8,6 +8,9 @@ class Settings:
         self.bg_color = (230, 230, 230)
         self.caption = "Alien Invasion"
 
+        # ship settings
+        self.ship_limit = 3
+
         # bullet settings
         self.bullet_speed = 4
         self.bullet_width = 8
@@ -17,7 +20,7 @@ class Settings:
 
         # alien settings
         self.alien_horiz_speed = 1
-        self.alien_vert_speed = 30
+        self.alien_vert_speed = 100
         # 1 = moving horizontal to right
         # -1 = moving horizontal to left
         self.fleet_direction = 1
