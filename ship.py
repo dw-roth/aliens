@@ -17,7 +17,7 @@ class Ship:
         print(f"ship rect: {self.rect}")
 
         # Start each new ship at bottom center of screen
-        self.rect.midbottom = self.original_position = self.screen_rect.midbottom
+        self.rect.midbottom = self.starting_position = self.screen_rect.midbottom
         self.moving_right = self.moving_left = False
         print(f"screen midbottom: {self.screen_rect.midbottom}")
         print(f"ship midbottom: {self.rect.midbottom}")
@@ -39,8 +39,8 @@ class Ship:
     def set_moving_left(self, val):
         self.moving_left = val
 
-    def set_position_original(self):
-        self.rect.midbottom = self.original_position
+    def set_position_starting(self):
+        self.rect.midbottom = self.starting_position
 
     def blitme(self):
         """ Draw the ship at its current location """
