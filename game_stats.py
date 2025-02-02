@@ -3,7 +3,13 @@ class GameStats:
 
     def __init__(self, game):
         self.settings = game.settings
-        self._reset_stats()
+        self.reset_stats()
+        self.ships_remaining = self.settings.ship_limit - 1
+        self.score = 0
+        self.high_score = 0
 
-    def _reset_stats(self):
-        self.ships_remaining = self.settings.ship_limit
+    def reset_stats(self):
+        self.ships_remaining = self.settings.ship_limit - 1
+        self.score = 0
+        self.level = 1
+        
