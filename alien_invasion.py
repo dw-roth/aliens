@@ -97,6 +97,7 @@ class AlienInvasion:
         if button_clicked and not self.game_active:
             self.sb.prep_score()
             self.sb.prep_level()
+            self.sb.prep_ships()
             self._start_game()
 
     def _start_game(self):
@@ -150,6 +151,7 @@ class AlienInvasion:
         # Decrement remaining ships
         if self.stats.ships_remaining > 0:
             self.stats.ships_remaining -= 1
+            self.sb.prep_ships()
             self._reset_game()
 
             # Pause
